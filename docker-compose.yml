@@ -1,0 +1,64 @@
+version: "3.1"
+services:
+  redis:
+    image: redis
+    networks:
+      - actionhero_backend
+
+  reactjs:
+    build:
+        context: ./frontend
+        dockerfile: ./Dockerfile
+    ports:
+        - 80:80
+    restart: on-failure
+    container_name: reactjs
+  
+  
+  actionhero:
+     build: ./backend
+     image: actionhero
+     ports:
+       - 8080:8080
+     environment:
+       SERVICE_PORTS: 8080
+       REDIS_HOST: redis
+       REDIS_PORT: 6379
+       REDIS_DB: 0
+     depends_on:
+       - redis
+    #  deploy:
+    #    mode: replicated
+    #    replicas: 3
+     networks:
+       - actionhero_frontend
+       - actionhero_backend
+
+#   proxy:
+#     image: dockercloud/haproxy
+#     depends_on:
+#       - actionhero
+#     environment:
+#       - BALANCE=leastconn
+#     volumes:
+#       - /var/run/docker.sock:/var/run/docker.sock
+#     ports:
+#       - 80:80
+#       - 433:433
+#       - 1936:1936
+#     environment:
+#       STATS_AUTH: actionhero:actionhero
+#       STATS_PORT: 1936
+#       MONITOR_URI: /api/status
+#     networks:
+#       - actionhero_frontend
+#     deploy:
+#       placement:
+#         constraints: [node.role == manager]
+
+
+networks:
+  actionhero_frontend:
+    driver: overlay
+  actionhero_backend:
+    driver: overlay

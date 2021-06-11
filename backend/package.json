@@ -1,0 +1,43 @@
+{
+  "author": "Santiago García Cabral <santiago@oruss.com.mx>",
+  "name": "CRM Cars",
+  "description": "CRM cars",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "dependencies": {
+    "actionhero": "26.0.6",
+    "ioredis": "latest",
+    "ioredis-mock": "latest",
+    "winston": "latest",
+    "ws": "latest"
+  },
+  "devDependencies": {
+    "@types/jest": "latest",
+    "@types/node": "latest",
+    "jest": "latest",
+    "prettier": "latest",
+    "ts-jest": "latest",
+    "ts-node-dev": "latest",
+    "typescript": "latest"
+  },
+  "scripts": {
+    "postinstall": "npm run build",
+    "dev": "ts-node-dev --no-deps --transpile-only ./src/server",
+    "debug": "tsc && ts-node-dev --transpile-only --no-deps --inspect -- ./src/server ",
+    "start": "node ./dist/server.js",
+    "actionhero": "actionhero",
+    "test": "jest",
+    "pretest": "npm run build && npm run lint",
+    "build": "tsc --sourceMap false --declaration",
+    "lint": "prettier --check src/*/** __tests__/*/**",
+    "pretty": "prettier --write src/*/** __tests__/*/**"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.ts?$": "ts-jest"
+    }
+  }
+}
