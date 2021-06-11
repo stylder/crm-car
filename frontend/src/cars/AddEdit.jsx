@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import DatePicker from 'react-date-picker';
+import config from 'config';
 
 
 import * as Yup from "yup";
@@ -156,7 +157,7 @@ const AddEdit = ({ history, match }) => {
         <div className="form-group col-6">
           <label>Fotografía</label>
           {car.image && <div className="image">
-                <img src={"http://localhost:8081/public/files/" +car.image} />
+                <img src={`${config.apiUrl}/public/files/${car.image}`}/>
             </div>}
           
           <input
